@@ -31,11 +31,15 @@ def load_dataset():
     return df
 
 
+from src.modeling import train_model  # add near the top if not already imported
+
 @st.cache_resource
 def load_model():
     model_path = Path(MODEL_DIR) / 'rf_price_forecast.joblib'
+    if not model_path.exists():
+        # Train and save the model if it doesn't exist yet
+        train_model()
     return joblib.load(model_path)
-
 
 def main():
     st.set_page_config(page_title='Eid al-Adha Livestock Price Forecast', layout='wide')
